@@ -9,6 +9,11 @@ use App\User;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['create', 'login']]);
+    }
+
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -46,5 +51,21 @@ class UsersController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function index()
+    {
+        return response()->json(['users' => User::all()], 200);
+    }
+
+    public function show($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            return response()->json(['user' => $user], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'user not found!'], 404);
+        }
     }
 }
