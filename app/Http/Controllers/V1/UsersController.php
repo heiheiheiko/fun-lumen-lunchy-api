@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -22,19 +24,14 @@ class UsersController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        try {
-            $user = new User;
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $plainPassword = $request->input('password');
-            $user->password = app('hash')->make($plainPassword);
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $plainPassword = $request->input('password');
+        $user->password = app('hash')->make($plainPassword);
+        $user->save();
 
-            $user->save();
-
-            return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'User Registration Failed!'], 409);
-        }
+        return new UserResource($user);
     }
 
     public function login(Request $request)
@@ -47,7 +44,7 @@ class UsersController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return $this->respondUnauthorized();
         }
 
         return $this->respondWithToken($token);
@@ -55,17 +52,13 @@ class UsersController extends Controller
 
     public function index()
     {
-        return response()->json(['users' => User::all()], 200);
+        $users = User::all();
+        return new UserCollection($users);
     }
 
     public function show($id)
     {
-        try {
-            $user = User::findOrFail($id);
-
-            return response()->json(['user' => $user], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'user not found!'], 404);
-        }
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 }
