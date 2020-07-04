@@ -9,6 +9,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'site' => $this->site,
             'order_date' => $this->order_date,
             'created_at' => $this->created_at,
