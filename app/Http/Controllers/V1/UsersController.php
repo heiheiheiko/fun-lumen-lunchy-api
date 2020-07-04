@@ -4,13 +4,13 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class UsersController extends Controller
 {
     public function create(Request $request)
     {
-        //validate incoming request
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -30,5 +30,21 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'User Registration Failed!'], 409);
         }
+    }
+
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only(['email', 'password']);
+
+        if (!$token = Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
     }
 }

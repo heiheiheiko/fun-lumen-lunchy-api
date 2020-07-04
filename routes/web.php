@@ -21,4 +21,5 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
     // users
     $router->post('/users', 'V1\UsersController@create');
+    $router->post('/users/login', 'V1\UsersController@login');
 });
