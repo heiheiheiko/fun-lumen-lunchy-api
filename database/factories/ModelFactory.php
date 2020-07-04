@@ -22,3 +22,10 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->email,
     ];
 });
+
+$factory->define(App\Order::class, function (Faker $faker) {
+    return [
+        'site' => $faker->url,
+        'order_date' => $faker->date,
+    ];
+});
