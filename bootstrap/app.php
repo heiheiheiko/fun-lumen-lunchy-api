@@ -112,4 +112,7 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+// "php artisan tinker"
+$app->register(Laravel\Tinker\TinkerServiceProvider::class);
+
 return $app;
