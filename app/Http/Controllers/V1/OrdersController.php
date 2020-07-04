@@ -31,7 +31,7 @@ class OrdersController extends Controller
 
         $order = Order::create([
             'site' => $request->input('order.site'),
-            'order_date' => $request->input('order.order_date'),
+            'ordered_at' => $request->input('order.ordered_at'),
         ]);
 
         return new OrderResource($order);

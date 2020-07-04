@@ -9,7 +9,7 @@ trait UserRequest
     protected function validateCreate(Request $request)
     {
         $this->validate($request, [
-            'user.name' => 'required|max:50|alpha_num|unique:users,name',
+            'user.username' => 'required|max:50|alpha_num|unique:users,username',
             'user.email' => 'required|email|max:255|unique:users,email',
             'user.password' => 'required|min:8',
         ]);

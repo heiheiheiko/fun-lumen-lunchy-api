@@ -26,6 +26,6 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(App\Order::class, function (Faker $faker) {
     return [
         'site' => $faker->url,
-        'order_date' => $faker->date,
+        'ordered_at' => $faker->date,
     ];
 });
