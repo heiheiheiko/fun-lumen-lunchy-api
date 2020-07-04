@@ -12,9 +12,13 @@
 */
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
+    // orders
     $router->get('/orders', 'V1\OrdersController@index');
     $router->post('/orders', 'V1\OrdersController@create');
     $router->get('/orders/{id}', 'V1\OrdersController@show');
     $router->put('/orders/{id}', 'V1\OrdersController@update');
     $router->delete('/orders/{id}', 'V1\OrdersController@destroy');
+
+    // users
+    $router->post('/users', 'V1\UsersController@create');
 });
