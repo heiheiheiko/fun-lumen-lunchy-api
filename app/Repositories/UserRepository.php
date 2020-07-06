@@ -8,14 +8,16 @@ use Illuminate\Http\Request;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function create(Request $request)
+    public function create($attributes)
     {
-        return User::create($request->all());
+        return User::create($attributes);
     }
 
-    public function update(Request $request, $id)
+    public function update($attributes)
     {
-        return User::findOrFail($id)->update($request->all());
+        $user = User::findOrFail($attributes->id);
+        $user->update($attributes);
+        return $user;
     }
 
     public function all()

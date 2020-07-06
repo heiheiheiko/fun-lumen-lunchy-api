@@ -23,16 +23,16 @@ class OrdersController extends Controller
     {
         $this->validateCreate($request);
 
-        $order = $this->orders->create($request);
+        $order = $this->orders->create($request)->input('order');
 
         return new OrderResource($order);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $this->validateUpdate($request);
 
-        $order = $this->orders->update($request, $id);
+        $order = $this->orders->update($request->input('order'));
 
         return new OrderResource($order);
     }

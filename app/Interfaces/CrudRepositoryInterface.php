@@ -2,13 +2,11 @@
 
 namespace App\Interfaces;
 
-use Illuminate\Http\Request;
-
 interface CrudRepositoryInterface
 {
-    public function create(Request $request);
+    public function create(array $attributes);
 
-    public function update(Request $request, int $id);
+    public function update(array $attributes);
 
     public function all();
 

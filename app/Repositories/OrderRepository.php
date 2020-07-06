@@ -4,19 +4,18 @@ namespace App\Repositories;
 
 use App\Interfaces\OrderRepositoryInterface;
 use App\Models\Order;
-use Illuminate\Http\Request;
 
 class OrderRepository implements OrderRepositoryInterface
 {
-    public function create(Request $request)
+    public function create($attributes)
     {
-        return Order::create($request->input('order'));
+        return Order::create($attributes);
     }
 
-    public function update(Request $request, $id)
+    public function update($attributes)
     {
-        $order = Order::findOrFail($id);
-        $order->update($request->input('order'));
+        $order = Order::findOrFail($attributes->id);
+        $order->update($attributes);
         return $order;
     }
 
