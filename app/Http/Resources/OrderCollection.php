@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Order;
+use App\Models\Order;
 
 class OrderCollection extends ResourceCollection
 {

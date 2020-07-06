@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\OrderRepositoryInterface;
-use App\Order;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderRepository implements OrderRepositoryInterface

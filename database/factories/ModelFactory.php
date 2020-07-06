@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 /*
@@ -23,7 +23,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Order::class, function (Faker $faker) {
+$factory->define(App\Models\Order::class, function (Faker $faker) {
     return [
         'site' => $faker->url,
         'ordered_at' => $faker->date,
