@@ -13,5 +13,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Interfaces\UserRepositoryInterface',
             'App\Repositories\UserRepository'
         );
+
+        App::bind(
+            'App\Interfaces\OrderRepositoryInterface',
+            'App\Repositories\OrderRepository'
+        );
     }
 }

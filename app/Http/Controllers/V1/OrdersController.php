@@ -6,40 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
-use App\Order;
+use App\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
     use OrderRequest;
 
-    public function __construct()
+    public function __construct(OrderRepositoryInterface $orders)
     {
         $this->middleware('auth');
-    }
-
-    public function index()
-    {
-        $orders = Order::all();
-
-        return new OrderCollection($orders);
+        $this->orders = $orders;
     }
 
     public function create(Request $request)
     {
         $this->validateCreate($request);
 
-        $order = Order::create([
-            'site' => $request->input('order.site'),
-            'ordered_at' => $request->input('order.ordered_at'),
-        ]);
-
-        return new OrderResource($order);
-    }
-
-    public function show($id)
-    {
-        $order = Order::find($id);
+        $order = $this->orders->create($request);
 
         return new OrderResource($order);
     }
@@ -48,15 +32,29 @@ class OrdersController extends Controller
     {
         $this->validateUpdate($request);
 
-        $order = Order::find($id);
-        $order->update($request->get('order'));
+        $order = $this->orders->update($request, $id);
 
         return new OrderResource($order);
     }
 
+    public function show($id)
+    {
+        $order = $this->orders->find($id);
+
+        return new OrderResource($order);
+    }
+
+    public function index()
+    {
+        $orders = $this->orders->all();
+
+        return new OrderCollection($orders);
+    }
+
     public function destroy($id)
     {
-        $order = Order::find($id);
-        $order->delete();
+        $order = $this->orders->delete($id);
+
+        return new OrderResource($order);
     }
 }
