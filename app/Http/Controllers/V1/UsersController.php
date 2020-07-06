@@ -6,25 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UserRequest;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
     use UserRequest;
 
-    public function __construct()
+    public function __construct(UserRepositoryInterface $users)
     {
         $this->middleware('auth', ['except' => ['create', 'login']]);
+        $this->users = $users;
     }
 
     public function create(Request $request)
     {
         $this->validateCreate($request);
 
-        $user = User::create([
+        $user = $this->users->create([
             'username' => $request->input('user.username'),
             'email' => $request->input('user.email'),
             'password' => Hash::make($request->input('user.password')),
@@ -48,13 +49,13 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = $this->users->all();
         return new UserCollection($users);
     }
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->users->find($id);
         return new UserResource($user);
     }
 }
