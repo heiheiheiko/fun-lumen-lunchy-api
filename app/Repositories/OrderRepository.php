@@ -14,7 +14,7 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function update($attributes)
     {
-        $order = Order::findOrFail($attributes->id);
+        $order = Order::findOrFail($attributes['id']);
         $order->update($attributes);
         return $order;
     }

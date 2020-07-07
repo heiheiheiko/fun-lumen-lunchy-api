@@ -23,7 +23,7 @@ class OrdersController extends Controller
     {
         $this->validateCreate($request);
 
-        $order = $this->orders->create($request)->input('order');
+        $order = $this->orders->create($request->input('order'));
 
         return new OrderResource($order);
     }
