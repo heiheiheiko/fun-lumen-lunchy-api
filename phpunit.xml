@@ -18,5 +18,6 @@
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="DB_DATABASE" value="/home/heiko/workspace/projects/lunchy-api/database/test.sqlite"/>
     </php>
 </phpunit>
