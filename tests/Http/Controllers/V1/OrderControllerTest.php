@@ -1,17 +1,16 @@
 <?php
 
 use App\Models\Order;
-use App\Models\User;
 use Illuminate\Testing\Assert;
+use Tests\ActingUserTestCase;
 
-class OrderControllerTest extends TestCase
+class OrderControllerTest extends ActingUserTestCase
 {
     public function testShouldReturnAllOrders()
     {
-        $user = factory(User::class)->create();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        Self::$actingUser->get('api/v1/orders');
 
-        $this->actingAs($user)->get('api/v1/orders');
         $this->seeStatusCode(200);
         $this->seeJsonContains([
             'site' => 'brennholz24.de',
