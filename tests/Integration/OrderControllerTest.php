@@ -15,9 +15,9 @@ class OrderControllerTest extends TestCase
         'data' => [
             'id',
             'site',
-            'updated_at',
-            'created_at',
-            'updated_at',
+            'updatedAt',
+            'createdAt',
+            'updatedAt',
         ]
     ];
     public static $COLLECTION_SCHEMA = [
@@ -25,16 +25,16 @@ class OrderControllerTest extends TestCase
             '*' => [
                 'id',
                 'site',
-                'updated_at',
-                'created_at',
-                'updated_at',
+                'updatedAt',
+                'createdAt',
+                'updatedAt',
             ]
         ]
     ];
     public static $EXPECTED_ORDER = [
         'id' => 1,
         'site' => 'brennholz24.de',
-        'ordered_at' => '2015-10-21'
+        'orderedAt' => '2015-10-21'
     ];
 
     // create action
@@ -49,7 +49,7 @@ class OrderControllerTest extends TestCase
         $body = [
             'order' => [
                 'site' => 'brennholz24.de',
-                'ordered_at' => '2015-10-21'
+                'orderedAt' => '2015-10-21'
             ]
         ];
         $this->post(Self::$API_URL, $body);
@@ -70,7 +70,7 @@ class OrderControllerTest extends TestCase
         $body = [
             'order' => [
                 'site' => 'brennholz24.de',
-                'ordered_at' => '2015-10-21'
+                'orderedAt' => '2015-10-21'
             ]
         ];
         Self::$authorizedUser->post(Self::$API_URL, $body);
@@ -89,7 +89,7 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthorizeUser();
-        $body = ['order' => ['ordered_at' => '2015-10-21']];
+        $body = ['order' => ['orderedAt' => '2015-10-21']];
         Self::$authorizedUser->post(Self::$API_URL, $body);
 
         // assertions
@@ -119,7 +119,7 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthorizeUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->create(['site' => 'brennholz24.de', 'orderedAt' => '2015-10-21']);
         Self::$authorizedUser->get(Self::$API_URL);
 
         // assertions
@@ -150,7 +150,7 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthorizeUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->create(['site' => 'brennholz24.de', 'orderedAt' => '2015-10-21']);
         Self::$authorizedUser->get(Self::$API_URL . '/1');
 
         // assertions
@@ -180,7 +180,7 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthorizeUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->create(['site' => 'brennholz24.de', 'orderedAt' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
         Self::$authorizedUser->put(Self::$API_URL . '/1', $body);
@@ -191,7 +191,7 @@ class OrderControllerTest extends TestCase
         $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
         $this->seeJsonContains([
             'site' => 'palettenShop.de',
-            'ordered_at' => '2015-10-21'
+            'orderedAt' => '2015-10-21'
         ]);
     }
 
@@ -216,7 +216,7 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthorizeUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->create(['site' => 'brennholz24.de', 'orderedAt' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         Self::$authorizedUser->delete(Self::$API_URL . '/1');
 

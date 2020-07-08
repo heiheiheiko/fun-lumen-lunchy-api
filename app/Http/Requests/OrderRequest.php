@@ -10,7 +10,7 @@ trait OrderRequest
     {
         $this->validate($request, [
             'order.site' => 'required',
-            'order.ordered_at' => 'required',
+            'order.orderedAt' => 'required',
         ]);
     }
 
@@ -18,7 +18,7 @@ trait OrderRequest
     {
         $this->validate($request, [
             'order.site' => 'sometimes',
-            'order.ordered_at' => 'sometimes',
+            'order.orderedAt' => 'sometimes',
         ]);
     }
 }
