@@ -23,9 +23,13 @@ trait TestHelper
         return $user;
     }
 
-    protected function authorizeUser()
+    protected function createAndAuthorizeUser()
     {
-        Self::$user = $this->createUnauthorizedUser();
+        Self::$user = factory(User::class)->create([
+            'username' => 'dagget',
+            'email' => 'dagget@beaver.de',
+            'password' => Hash::make('baronbadbeaver'),
+        ]);
         Self::$authorizedUser = $this->actingAs(Self::$user);
     }
 

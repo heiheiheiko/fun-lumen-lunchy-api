@@ -31,10 +31,15 @@ class UserControllerTest extends TestCase
             ]
         ]
     ];
-    public static $EXPECTED_USER = [
+    public static $EXPECTED_UNAUTHORIZED_USER = [
         'id' => 1,
         'username' => 'stump',
         'email' => 'stump@forest.de'
+    ];
+    public static $EXPECTED_AUTHORIZED_USER = [
+        'id' => 1,
+        'username' => 'dagget',
+        'email' => 'dagget@beaver.de'
     ];
 
     // create action
@@ -59,7 +64,7 @@ class UserControllerTest extends TestCase
         $this->seeInDatabase('users', ['username' => 'stump']);
         $this->seeStatusCode(201);
         $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
-        $this->seeJsonContains(Self::$EXPECTED_USER);
+        $this->seeJsonContains(Self::$EXPECTED_UNAUTHORIZED_USER);
     }
 
     // Given is an unauthorized user
@@ -132,14 +137,14 @@ class UserControllerTest extends TestCase
     public function test_AuthorizedUser_IndexAction_ReturnStoredUsers()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         Self::$authorizedUser->get(Self::$API_URL);
 
         // assertions
         $this->seeStatusCode(200);
         $this->seeJsonStructure(Self::$COLLECTION_SCHEMA);
         $this->seeJsonCollectionCount('data', 1);
-        $this->seeJsonContains(Self::$EXPECTED_USER);
+        $this->seeJsonContains(Self::$EXPECTED_AUTHORIZED_USER);
     }
 
     // show action
@@ -162,12 +167,12 @@ class UserControllerTest extends TestCase
     public function test_AuthorizedUser_ShowAction_ReturnStoredUser()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         Self::$authorizedUser->get(Self::$API_URL . '/1');
 
         // assertions
         $this->seeStatusCode(200);
         $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
-        $this->seeJsonContains(Self::$EXPECTED_USER);
+        $this->seeJsonContains(Self::$EXPECTED_AUTHORIZED_USER);
     }
 }

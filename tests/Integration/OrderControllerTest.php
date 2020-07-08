@@ -35,12 +35,12 @@ class OrderControllerTest extends TestCase
     }
 
     // Given is an authorized user
-    // When the "create" action is called with required attributes
+    // When the "create" action is called with valid attributes
     // Then a new "order" should be store and return
     public function test_AuthorizedUser_CreateAction_CreateOrder()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
         $body = [
             'order' => [
@@ -68,13 +68,13 @@ class OrderControllerTest extends TestCase
         ]);
     }
 
-    // Given is an authorized user
-    // When the "create" action is called with missing "site"
+    // Given is an unauthorized user
+    // When the "create" action is called with invalid attributes
     // Then a new "order" should NOT be store and return a validation message
-    public function test_AuthorizedUser_CreateActionWithMissingSite_NotCreateOrder()
+    public function test_UnauthorizedUser_CreateActionWithInvalidAttributes_NotCreateOrder()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         $body = ['order' => ['ordered_at' => '2015-10-21']];
         Self::$authorizedUser->post(Self::$API_URL, $body);
 
@@ -82,22 +82,6 @@ class OrderControllerTest extends TestCase
         $this->seeStatusCode(422);
         $this->seeJsonStructure(['order.site']);
         $this->seeJsonContains(['order.site' => ['The order.site field is required.']]);
-    }
-
-    // Given is an authorized user
-    // When the "create" action is called with missing "ordered_at"
-    // Then new "order" should NOT be store and return a validation message
-    public function test_AuthorizedUser_CreateActionWithMissingOrderedAt_NotCreateOrder()
-    {
-        // preparation
-        $this->authorizeUser();
-        $body = ['order' => ['site' => 'brennholz24.de']];
-        Self::$authorizedUser->post(Self::$API_URL, $body);
-
-        // assertions
-        $this->seeStatusCode(422);
-        $this->seeJsonStructure(['order.ordered_at']);
-        $this->seeJsonContains(['order.ordered_at' => ['The order.ordered at field is required.']]);
     }
 
     // index action
@@ -120,7 +104,7 @@ class OrderControllerTest extends TestCase
     public function test_AuthorizedUser_IndexAction_ReturnStoredOrders()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         Self::$authorizedUser->get(Self::$API_URL);
 
@@ -164,7 +148,7 @@ class OrderControllerTest extends TestCase
     public function test_AuthorizedUser_ShowAction_ReturnStoredOrder()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         Self::$authorizedUser->get(Self::$API_URL . '/1');
 
@@ -205,7 +189,7 @@ class OrderControllerTest extends TestCase
     public function test_AuthorizedUser_UpdateAction_ReturnUpdatedOrder()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
@@ -249,7 +233,7 @@ class OrderControllerTest extends TestCase
     public function test_AuthorizedUser_DeleteAction_DeleteStoredOrder()
     {
         // preparation
-        $this->authorizeUser();
+        $this->createAndAuthorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         Self::$authorizedUser->delete(Self::$API_URL . '/1');
