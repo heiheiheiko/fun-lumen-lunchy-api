@@ -3,10 +3,10 @@
 namespace Test\Integration;
 
 use App\Models\Order;
-use Tests\ActingUserTestCase;
+use Tests\TestCase;
 use Tests\TestHelper;
 
-class OrderControllerTest extends ActingUserTestCase
+class OrderControllerTest extends TestCase
 {
     use TestHelper;
 
@@ -18,6 +18,7 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_CreateAction_CreateOrder()
     {
         // preparation
+        $this->authorizeUser();
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
         $body = [
             'order' => [
@@ -25,7 +26,7 @@ class OrderControllerTest extends ActingUserTestCase
                 'ordered_at' => '2015-10-21'
             ]
         ];
-        Self::$actingUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post('api/v1/orders', $body);
 
         // assertions
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
@@ -51,8 +52,9 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_CreateActionWithMissingSite_NotCreateOrder()
     {
         // preparation
+        $this->authorizeUser();
         $body = ['order' => ['ordered_at' => '2015-10-21']];
-        Self::$actingUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post('api/v1/orders', $body);
 
         // assertions
         $this->seeStatusCode(422);
@@ -66,8 +68,9 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_CreateActionWithMissingOrderedAt_NotCreateOrder()
     {
         // preparation
+        $this->authorizeUser();
         $body = ['order' => ['site' => 'brennholz24.de']];
-        Self::$actingUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post('api/v1/orders', $body);
 
         // assertions
         $this->seeStatusCode(422);
@@ -83,8 +86,9 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_IndexAction_ReturnStoredOrders()
     {
         // preparation
+        $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
-        Self::$actingUser->get('api/v1/orders');
+        Self::$authorizedUser->get('api/v1/orders');
 
         // assertions
         $this->seeStatusCode(200);
@@ -114,8 +118,9 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_ShowAction_ReturnStoredOrder()
     {
         // preparation
+        $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
-        Self::$actingUser->get('api/v1/orders/1');
+        Self::$authorizedUser->get('api/v1/orders/1');
 
         // assertions
         $this->seeStatusCode(200);
@@ -142,10 +147,11 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_UpdateAction_ReturnUpdatedOrder()
     {
         // preparation
+        $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
-        Self::$actingUser->put('api/v1/orders/1', $body);
+        Self::$authorizedUser->put('api/v1/orders/1', $body);
 
         // assertions
         $this->seeInDatabase('orders', ['site' => 'palettenShop.de']);
@@ -173,9 +179,10 @@ class OrderControllerTest extends ActingUserTestCase
     public function test_AuthorizedUser_DeleteAction_DeleteStoredOrder()
     {
         // preparation
+        $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
-        Self::$actingUser->delete('api/v1/orders/1');
+        Self::$authorizedUser->delete('api/v1/orders/1');
 
         // assertions
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
