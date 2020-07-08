@@ -11,6 +11,31 @@ class OrderControllerTest extends TestCase
     use TestHelper;
 
     public static $API_URL = 'api/v1/orders';
+    public static $RESOURCE_SCHEMA = [
+        'data' => [
+            'id',
+            'site',
+            'updated_at',
+            'created_at',
+            'updated_at',
+        ]
+    ];
+    public static $COLLECTION_SCHEMA = [
+        'data' => [
+            '*' => [
+                'id',
+                'site',
+                'updated_at',
+                'created_at',
+                'updated_at',
+            ]
+        ]
+    ];
+    public static $EXPECTED_ORDER = [
+        'id' => 1,
+        'site' => 'brennholz24.de',
+        'ordered_at' => '2015-10-21'
+    ];
 
     // create action
     //
@@ -53,19 +78,8 @@ class OrderControllerTest extends TestCase
         // assertions
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $this->seeStatusCode(201);
-        $this->seeJsonStructure([
-            'data' => [
-                'id',
-                'site',
-                'updated_at',
-                'created_at',
-                'updated_at',
-            ]
-        ]);
-        $this->seeJsonContains([
-            'site' => 'brennholz24.de',
-            'ordered_at' => '2015-10-21'
-        ]);
+        $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
+        $this->seeJsonContains(Self::$EXPECTED_ORDER);
     }
 
     // Given is an unauthorized user
@@ -110,22 +124,9 @@ class OrderControllerTest extends TestCase
 
         // assertions
         $this->seeStatusCode(200);
-        $this->seeJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'site',
-                    'updated_at',
-                    'created_at',
-                    'updated_at',
-                ]
-            ]
-        ]);
+        $this->seeJsonStructure(Self::$COLLECTION_SCHEMA);
         $this->seeJsonCollectionCount('data', 1);
-        $this->seeJsonContains([
-            'site' => 'brennholz24.de',
-            'ordered_at' => '2015-10-21'
-        ]);
+        $this->seeJsonContains(Self::$EXPECTED_ORDER);
     }
 
     // show action
@@ -154,19 +155,8 @@ class OrderControllerTest extends TestCase
 
         // assertions
         $this->seeStatusCode(200);
-        $this->seeJsonStructure([
-            'data' => [
-                'id',
-                'site',
-                'updated_at',
-                'created_at',
-                'updated_at',
-            ]
-        ]);
-        $this->seeJsonContains([
-            'site' => 'brennholz24.de',
-            'ordered_at' => '2015-10-21'
-        ]);
+        $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
+        $this->seeJsonContains(Self::$EXPECTED_ORDER);
     }
 
     // update actions
@@ -198,15 +188,7 @@ class OrderControllerTest extends TestCase
         // assertions
         $this->seeInDatabase('orders', ['site' => 'palettenShop.de']);
         $this->seeStatusCode(200);
-        $this->seeJsonStructure([
-            'data' => [
-                'id',
-                'site',
-                'updated_at',
-                'created_at',
-                'updated_at',
-            ]
-        ]);
+        $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
         $this->seeJsonContains([
             'site' => 'palettenShop.de',
             'ordered_at' => '2015-10-21'
@@ -241,18 +223,7 @@ class OrderControllerTest extends TestCase
         // assertions
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
         $this->seeStatusCode(200);
-        $this->seeJsonStructure([
-            'data' => [
-                'id',
-                'site',
-                'updated_at',
-                'created_at',
-                'updated_at',
-            ]
-        ]);
-        $this->seeJsonContains([
-            'site' => 'brennholz24.de',
-            'ordered_at' => '2015-10-21'
-        ]);
+        $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
+        $this->seeJsonContains(Self::$EXPECTED_ORDER);
     }
 }
