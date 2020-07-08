@@ -47,7 +47,7 @@ class UserControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "create" action is called with valid attributes
     // Then a new "user" should be store and return
-    public function test_UnauthorizedUser_CreateAction_CreateUser()
+    public function test_CallCreate_AsAnUnauthorizedUser_ShouldCreateAnUser()
     {
         // preparation
         $this->missingFromDatabase('users', ['username' => 'stump']);
@@ -70,7 +70,7 @@ class UserControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "create" action is called with invalid attributes
     // Then a new "user" should NOT be store and return a validation message
-    public function test_UnauthorizedUser_CreateActionWithInvalidAttributes_NotCreateUser()
+    public function test_CallCreateWithInvalidAttributes_AsAnUnauthorizedUser_ShouldNotCreateAnUser()
     {
         // preparation
         $this->missingFromDatabase('users', ['username' => 'stump']);
@@ -93,7 +93,7 @@ class UserControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "login" action is called with valid credentials
     // Then a access token should be return
-    public function test_UnauthorizedUser_LoginAction_LoginUser()
+    public function test_CallLogin_AsAnUnauthorizedUser_ShouldReturnAnAccessToken()
     {
         // preparation
         $this->createUnauthorizedUser();
@@ -122,7 +122,7 @@ class UserControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "index" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_IndexAction_ReturnUnauthorized()
+    public function test_CallIndex_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->get(Self::$API_URL);
@@ -134,7 +134,7 @@ class UserControllerTest extends TestCase
     // Given is an authorized user
     // When the "index" action is called
     // Then all stored "users" should be return
-    public function test_AuthorizedUser_IndexAction_ReturnStoredUsers()
+    public function test_CallIndex_AsAnAuthorizedUser_ShouldReturnStoredUsers()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -152,7 +152,7 @@ class UserControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "show" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_ShowAction_ReturnUnauthorized()
+    public function test_CallShow_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->get(Self::$API_URL . '/1');
@@ -164,7 +164,7 @@ class UserControllerTest extends TestCase
     // Given is an authorized user
     // When the "show" action is called with a stored "user.id"
     // Then the "user" should be find and return
-    public function test_AuthorizedUser_ShowAction_ReturnStoredUser()
+    public function test_CallShow_AsAnAuthorizedUser_ShouldReturnAnStoredUser()
     {
         // preparation
         $this->createAndAuthorizeUser();

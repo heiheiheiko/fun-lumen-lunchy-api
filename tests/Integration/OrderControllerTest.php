@@ -42,7 +42,7 @@ class OrderControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "create" action is called
     // Then just return a validation message
-    public function test_UnauthorizedUser_CreateAction_ReturnUnauthorized()
+    public function test_CallCreate_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
@@ -62,7 +62,7 @@ class OrderControllerTest extends TestCase
     // Given is an authorized user
     // When the "create" action is called with valid attributes
     // Then a new "order" should be store and return
-    public function test_AuthorizedUser_CreateAction_CreateOrder()
+    public function test_CallCreate_AsAnAuthorizedUser_ShouldCreateAnOrder()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -82,10 +82,10 @@ class OrderControllerTest extends TestCase
         $this->seeJsonContains(Self::$EXPECTED_ORDER);
     }
 
-    // Given is an unauthorized user
+    // Given is an authorized user
     // When the "create" action is called with invalid attributes
     // Then a new "order" should NOT be store and return a validation message
-    public function test_UnauthorizedUser_CreateActionWithInvalidAttributes_NotCreateOrder()
+    public function test_CallCreateActionWithInvalidAttributes_AsAnUnauthorizedUser_ShouldNotCreateAnOrder()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -103,7 +103,7 @@ class OrderControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "index" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_IndexAction_ReturnUnauthorized()
+    public function test_CallIndex_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->get(Self::$API_URL);
@@ -115,7 +115,7 @@ class OrderControllerTest extends TestCase
     // Given is an authorized user
     // When the "index" action is called
     // Then all stored "orders" should be return
-    public function test_AuthorizedUser_IndexAction_ReturnStoredOrders()
+    public function test_CallIndex_AsAnAuthorizedUser_ShouldReturnStoredOrders()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -134,7 +134,7 @@ class OrderControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "show" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_ShowAction_ReturnUnauthorized()
+    public function test_CallShow_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->get(Self::$API_URL . '/1');
@@ -146,7 +146,7 @@ class OrderControllerTest extends TestCase
     // Given is an authorized user
     // When the "show" action is called with a stored "order.id"
     // Then the "order" should be find and return
-    public function test_AuthorizedUser_ShowAction_ReturnStoredOrder()
+    public function test_CallShow_AsAnAuthorizedUser_ShouldReturnAnStoredOrder()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -164,7 +164,7 @@ class OrderControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "update" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_UpdateAction_ReturnUnauthorized()
+    public function test_CallUpdate_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->put(Self::$API_URL . '/1');
@@ -176,7 +176,7 @@ class OrderControllerTest extends TestCase
     // Given is an authorized user
     // When the "update" action is called with a updated attribute
     // Then the "order" should be update and return
-    public function test_AuthorizedUser_UpdateAction_ReturnUpdatedOrder()
+    public function test_CallUpdate_AsAnAuthorizedUser_ShouldReturnAnUpdatedOrder()
     {
         // preparation
         $this->createAndAuthorizeUser();
@@ -200,7 +200,7 @@ class OrderControllerTest extends TestCase
     // Given is an unauthorized user
     // When the "update" action is called
     // Then return an unauthorized message
-    public function test_UnauthorizedUser_DeleteAction_ReturnUnauthorized()
+    public function test_CallDelete_AsAnUnauthorizedUser_ShouldReturnUnauthorized()
     {
         // preparation
         $this->delete(Self::$API_URL . '/1');
@@ -212,7 +212,7 @@ class OrderControllerTest extends TestCase
     // Given is an authorized user
     // When the "delete" action is called with a stored "order.id"
     // Then the "order" should be delte and return a copy of the deleted "order"
-    public function test_AuthorizedUser_DeleteAction_DeleteStoredOrder()
+    public function test_CallDelete_AsAnAuthorizedUser_ShouldDeleteAnOrder()
     {
         // preparation
         $this->createAndAuthorizeUser();
