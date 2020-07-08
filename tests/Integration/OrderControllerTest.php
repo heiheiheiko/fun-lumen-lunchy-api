@@ -10,8 +10,30 @@ class OrderControllerTest extends TestCase
 {
     use TestHelper;
 
+    public static $API_URL = 'api/v1/orders';
+
     // create action
     //
+    // Given is an unauthorized user
+    // When the "create" action is called
+    // Then just return a validation message
+    public function test_UnauthorizedUser_CreateAction_ReturnUnauthorized()
+    {
+        // preparation
+        $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
+        $body = [
+            'order' => [
+                'site' => 'brennholz24.de',
+                'ordered_at' => '2015-10-21'
+            ]
+        ];
+        $this->post(Self::$API_URL, $body);
+
+        // assertions
+        $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
+        $this->seeUnauthorized();
+    }
+
     // Given is an authorized user
     // When the "create" action is called with required attributes
     // Then a new order should be store and return
@@ -26,7 +48,7 @@ class OrderControllerTest extends TestCase
                 'ordered_at' => '2015-10-21'
             ]
         ];
-        Self::$authorizedUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post(Self::$API_URL, $body);
 
         // assertions
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
@@ -54,7 +76,7 @@ class OrderControllerTest extends TestCase
         // preparation
         $this->authorizeUser();
         $body = ['order' => ['ordered_at' => '2015-10-21']];
-        Self::$authorizedUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post(Self::$API_URL, $body);
 
         // assertions
         $this->seeStatusCode(422);
@@ -70,7 +92,7 @@ class OrderControllerTest extends TestCase
         // preparation
         $this->authorizeUser();
         $body = ['order' => ['site' => 'brennholz24.de']];
-        Self::$authorizedUser->post('api/v1/orders', $body);
+        Self::$authorizedUser->post(Self::$API_URL, $body);
 
         // assertions
         $this->seeStatusCode(422);
@@ -80,6 +102,18 @@ class OrderControllerTest extends TestCase
 
     // index action
     //
+    // Given is an unauthorized user
+    // When the "index" action is called
+    // Then return an unauthorized message
+    public function test_UnauthorizedUser_IndexAction_ReturnUnauthorized()
+    {
+        // preparation
+        $this->get(Self::$API_URL);
+
+        // assertions
+        $this->seeUnauthorized();
+    }
+
     // Given is an authorized user
     // When the "index" action is called
     // Then all stored orders should be return
@@ -88,7 +122,7 @@ class OrderControllerTest extends TestCase
         // preparation
         $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
-        Self::$authorizedUser->get('api/v1/orders');
+        Self::$authorizedUser->get(Self::$API_URL);
 
         // assertions
         $this->seeStatusCode(200);
@@ -112,6 +146,18 @@ class OrderControllerTest extends TestCase
 
     // show action
     //
+    // Given is an unauthorized user
+    // When the "show" action is called
+    // Then return an unauthorized message
+    public function test_UnauthorizedUser_ShowAction_ReturnUnauthorized()
+    {
+        // preparation
+        $this->get(Self::$API_URL . '/1');
+
+        // assertions
+        $this->seeUnauthorized();
+    }
+
     // Given is an authorized user
     // When the "show" action is called with a stored "order.id"
     // Then the order should be find and return
@@ -120,7 +166,7 @@ class OrderControllerTest extends TestCase
         // preparation
         $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
-        Self::$authorizedUser->get('api/v1/orders/1');
+        Self::$authorizedUser->get(Self::$API_URL . '/1');
 
         // assertions
         $this->seeStatusCode(200);
@@ -141,6 +187,18 @@ class OrderControllerTest extends TestCase
 
     // update actions
     //
+    // Given is an unauthorized user
+    // When the "update" action is called
+    // Then return an unauthorized message
+    public function test_UnauthorizedUser_UpdateAction_ReturnUnauthorized()
+    {
+        // preparation
+        $this->put(Self::$API_URL . '/1');
+
+        // assertions
+        $this->seeUnauthorized();
+    }
+
     // Given is an authorized user
     // When the "update" action is called with a updated attribute
     // Then the order should be update and return
@@ -151,7 +209,7 @@ class OrderControllerTest extends TestCase
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
-        Self::$authorizedUser->put('api/v1/orders/1', $body);
+        Self::$authorizedUser->put(Self::$API_URL . '/1', $body);
 
         // assertions
         $this->seeInDatabase('orders', ['site' => 'palettenShop.de']);
@@ -173,6 +231,18 @@ class OrderControllerTest extends TestCase
 
     // delete actions
     //
+    // Given is an unauthorized user
+    // When the "update" action is called
+    // Then return an unauthorized message
+    public function test_UnauthorizedUser_DeleteAction_ReturnUnauthorized()
+    {
+        // preparation
+        $this->delete(Self::$API_URL . '/1');
+
+        // assertions
+        $this->seeUnauthorized();
+    }
+
     // Given is an authorized user
     // When the "delete" action is called with a stored "order.id"
     // Then the order should be delte and return a copy of the deleted order
@@ -182,7 +252,7 @@ class OrderControllerTest extends TestCase
         $this->authorizeUser();
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
-        Self::$authorizedUser->delete('api/v1/orders/1');
+        Self::$authorizedUser->delete(Self::$API_URL . '/1');
 
         // assertions
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
