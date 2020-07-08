@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Order::class, function (Faker $faker) {
     return [
         'site' => $faker->url,
-        'orderedAt' => $faker->date,
+        'ordered_at' => $faker->date,
     ];
 });

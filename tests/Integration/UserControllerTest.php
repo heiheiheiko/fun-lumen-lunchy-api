@@ -16,8 +16,8 @@ class UserControllerTest extends TestCase
             'id',
             'username',
             'email',
-            'createdAt',
-            'updatedAt',
+            'created_at',
+            'updated_at',
         ]
     ];
     public static $COLLECTION_SCHEMA = [
@@ -26,8 +26,8 @@ class UserControllerTest extends TestCase
                 'id',
                 'username',
                 'email',
-                'createdAt',
-                'updatedAt',
+                'created_at',
+                'updated_at',
             ]
         ]
     ];
