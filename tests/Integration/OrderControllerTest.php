@@ -36,7 +36,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "create" action is called with required attributes
-    // Then a new order should be store and return
+    // Then a new "order" should be store and return
     public function test_AuthorizedUser_CreateAction_CreateOrder()
     {
         // preparation
@@ -70,7 +70,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "create" action is called with missing "site"
-    // Then a new order should NOT be store and return a validation message
+    // Then a new "order" should NOT be store and return a validation message
     public function test_AuthorizedUser_CreateActionWithMissingSite_NotCreateOrder()
     {
         // preparation
@@ -86,7 +86,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "create" action is called with missing "ordered_at"
-    // Then new order should NOT be store and return a validation message
+    // Then new "order" should NOT be store and return a validation message
     public function test_AuthorizedUser_CreateActionWithMissingOrderedAt_NotCreateOrder()
     {
         // preparation
@@ -116,7 +116,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "index" action is called
-    // Then all stored orders should be return
+    // Then all stored "orders" should be return
     public function test_AuthorizedUser_IndexAction_ReturnStoredOrders()
     {
         // preparation
@@ -160,7 +160,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "show" action is called with a stored "order.id"
-    // Then the order should be find and return
+    // Then the "order" should be find and return
     public function test_AuthorizedUser_ShowAction_ReturnStoredOrder()
     {
         // preparation
@@ -201,7 +201,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "update" action is called with a updated attribute
-    // Then the order should be update and return
+    // Then the "order" should be update and return
     public function test_AuthorizedUser_UpdateAction_ReturnUpdatedOrder()
     {
         // preparation
@@ -245,7 +245,7 @@ class OrderControllerTest extends TestCase
 
     // Given is an authorized user
     // When the "delete" action is called with a stored "order.id"
-    // Then the order should be delte and return a copy of the deleted order
+    // Then the "order" should be delte and return a copy of the deleted "order"
     public function test_AuthorizedUser_DeleteAction_DeleteStoredOrder()
     {
         // preparation
