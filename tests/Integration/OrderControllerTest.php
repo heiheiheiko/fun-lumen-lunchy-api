@@ -10,10 +10,14 @@ class OrderControllerTest extends ActingUserTestCase
 {
     use TestHelper;
 
-    // create
-    public function test_CreateAction_ShouldCreateAndReturnAnOrder()
+    // create action
+    //
+    // Given is an authorized user
+    // When the "create" action is called with required attributes
+    // Then a new order should be store and return
+    public function test_AuthorizedUser_CreateAction_CreateOrder()
     {
-        // preperation
+        // preparation
         $this->missingFromDatabase('orders', ['site' => 'brennholz24.de']);
         $body = [
             'order' => [
@@ -41,9 +45,12 @@ class OrderControllerTest extends ActingUserTestCase
         ]);
     }
 
-    public function test_CreateAction_ShouldNotCreateAnOrderWhenSiteIsMissing()
+    // Given is an authorized user
+    // When the "create" action is called with missing "site"
+    // Then a new order should NOT be store and return a validation message
+    public function test_AuthorizedUser_CreateActionWithMissingSite_NotCreateOrder()
     {
-        // preperation
+        // preparation
         $body = ['order' => ['ordered_at' => '2015-10-21']];
         Self::$actingUser->post('api/v1/orders', $body);
 
@@ -53,9 +60,12 @@ class OrderControllerTest extends ActingUserTestCase
         $this->seeJsonContains(['order.site' => ['The order.site field is required.']]);
     }
 
-    public function test_CreateAction_ShouldNotCreateAnOrderWhenOrderedAtIsMissing()
+    // Given is an authorized user
+    // When the "create" action is called with missing "ordered_at"
+    // Then new order should NOT be store and return a validation message
+    public function test_AuthorizedUser_CreateActionWithMissingOrderedAt_NotCreateOrder()
     {
-        // preperation
+        // preparation
         $body = ['order' => ['site' => 'brennholz24.de']];
         Self::$actingUser->post('api/v1/orders', $body);
 
@@ -65,10 +75,14 @@ class OrderControllerTest extends ActingUserTestCase
         $this->seeJsonContains(['order.ordered_at' => ['The order.ordered at field is required.']]);
     }
 
-    // index
-    public function test_IndexAction_ShouldReturnAllOrders()
+    // index action
+    //
+    // Given is an authorized user
+    // When the "index" action is called
+    // Then all stored orders should be return
+    public function test_AuthorizedUser_IndexAction_ReturnStoredOrders()
     {
-        // preperation
+        // preparation
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         Self::$actingUser->get('api/v1/orders');
 
@@ -92,10 +106,14 @@ class OrderControllerTest extends ActingUserTestCase
         ]);
     }
 
-    // show
-    public function test_ShowAction_ShouldReturnAnOrder()
+    // show action
+    //
+    // Given is an authorized user
+    // When the "show" action is called with a stored "order.id"
+    // Then the order should be find and return
+    public function test_AuthorizedUser_ShowAction_ReturnStoredOrder()
     {
-        // preperation
+        // preparation
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         Self::$actingUser->get('api/v1/orders/1');
 
@@ -116,10 +134,14 @@ class OrderControllerTest extends ActingUserTestCase
         ]);
     }
 
-    // update
-    public function test_UpdateAction_ShouldUpdateAnExistingOrderAndReturnIt()
+    // update actions
+    //
+    // Given is an authorized user
+    // When the "update" action is called with a updated attribute
+    // Then the order should be update and return
+    public function test_AuthorizedUser_UpdateAction_ReturnUpdatedOrder()
     {
-        // preperation
+        // preparation
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
@@ -143,10 +165,14 @@ class OrderControllerTest extends ActingUserTestCase
         ]);
     }
 
-    // update
-    public function test_DeleteAction_ShouldDeleteAnExistingOrderAndReturnIt()
+    // delete actions
+    //
+    // Given is an authorized user
+    // When the "delete" action is called with a stored "order.id"
+    // Then the order should be delte and return a copy of the deleted order
+    public function test_AuthorizedUser_DeleteAction_DeleteStoredOrder()
     {
-        // preperation
+        // preparation
         factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         Self::$actingUser->delete('api/v1/orders/1');
