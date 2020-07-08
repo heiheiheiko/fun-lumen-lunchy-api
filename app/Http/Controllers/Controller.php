@@ -15,9 +15,11 @@ class Controller extends BaseController
     protected function respondWithToken($token)
     {
         return $this->respond([
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'data' => [
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => Auth::factory()->getTTL() * 60
+            ],
         ], 200);
     }
 

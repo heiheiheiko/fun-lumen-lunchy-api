@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Assert;
 
 trait TestHelper
@@ -10,12 +11,25 @@ trait TestHelper
     protected static $user;
     protected static $authorizedUser;
 
+    // preparations
+    public function createUnauthorizedUser()
+    {
+        $user = factory(User::class)->create([
+            'username' => 'stump',
+            'email' => 'stump@forest.de',
+            'password' => Hash::make('savetherainforest'),
+        ]);
+        $this->seeInDatabase('users', ['username' => 'stump']);
+        return $user;
+    }
+
     protected function authorizeUser()
     {
-        Self::$user = factory(User::class)->create();
+        Self::$user = $this->createUnauthorizedUser();
         Self::$authorizedUser = $this->actingAs(Self::$user);
     }
 
+    // assertions
     protected function seeUnauthorized()
     {
         $this->seeStatusCode(401);
