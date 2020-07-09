@@ -11,9 +11,9 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'site' => $this->site,
-            'ordered_at' => $this->ordered_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'orderedAt' => $this->ordered_at,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }
