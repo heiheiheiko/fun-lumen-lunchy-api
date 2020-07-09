@@ -17,7 +17,7 @@ class UsersController extends Controller
 
     public function __construct(UserRepositoryInterface $users)
     {
-        $this->middleware('auth', ['except' => ['create', 'login']]);
+        $this->middleware('auth', ['except' => ['create', 'authenticate']]);
         $this->users = $users;
     }
 
@@ -34,9 +34,9 @@ class UsersController extends Controller
         return new UserResource($user);
     }
 
-    public function login(Request $request)
+    public function authenticate(Request $request)
     {
-        $this->validateLogin($request);
+        $this->validateAuthenticate($request);
 
         $credentials = $request->all()['user'];
 

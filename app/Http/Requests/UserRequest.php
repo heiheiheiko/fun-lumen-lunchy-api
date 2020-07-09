@@ -15,7 +15,7 @@ trait UserRequest
         ]);
     }
 
-    protected function validateLogin(Request $request)
+    protected function validateAuthenticate(Request $request)
     {
         $this->validate($request, [
             'user.email' => 'required|email|max:255',

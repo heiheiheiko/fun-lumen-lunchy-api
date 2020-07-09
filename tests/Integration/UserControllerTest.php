@@ -88,12 +88,12 @@ class UserControllerTest extends TestCase
         $this->seeJsonContains(['user.username' => ['The user.username field is required.']]);
     }
 
-    // login action
+    // authenticate action
     //
     // Given is an unauthorized user
-    // When the "login" action is called with valid credentials
+    // When the "authenticate" action is called with valid credentials
     // Then a access token should be return
-    public function test_CallLogin_AsAnUnauthorizedUser_ShouldReturnAnAccessToken()
+    public function test_CallAuthenticate_AsAnUnauthorizedUser_ShouldReturnAnAccessToken()
     {
         // preparation
         $this->createUnauthorizedUser();
@@ -104,7 +104,7 @@ class UserControllerTest extends TestCase
                 'password' => 'savetherainforest'
             ]
         ];
-        $this->post(Self::$API_URL . '/login', $body);
+        $this->post(Self::$API_URL . '/authenticate', $body);
 
         // assertions
         $this->seeStatusCode(200);
