@@ -94,7 +94,7 @@ class OrderControllerTest extends TestCase
 
         // assertions
         $this->seeStatusCode(422);
-        $this->seeJsonStructure(['errors']);
+        $this->seeJsonStructure(['error']);
         $this->seeJsonContains(['site' => ['The site field is required.']]);
     }
 

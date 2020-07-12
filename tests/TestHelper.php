@@ -37,7 +37,7 @@ trait TestHelper
     protected function seeUnauthorized()
     {
         $this->seeStatusCode(401);
-        $this->seeJsonContains(['errors' => 'Unauthorized']);
+        $this->seeJsonContains(['error' => 'Unauthorized']);
     }
 
     protected function seeJsonCollectionCount($key, $number)
