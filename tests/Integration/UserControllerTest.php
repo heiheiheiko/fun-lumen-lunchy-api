@@ -31,12 +31,12 @@ class UserControllerTest extends TestCase
             ]
         ]
     ];
-    public static $EXPECTED_UNAUTHORIZED_USER = [
+    public static $EXPECTED_UNAUTHENTICATED_USER = [
         'id' => 1,
         'username' => 'stump',
         'email' => 'stump@forest.de'
     ];
-    public static $EXPECTED_AUTHORIZED_USER = [
+    public static $EXPECTED_AUTHENTICATED_USER = [
         'id' => 1,
         'username' => 'dagget',
         'email' => 'dagget@beaver.de'
@@ -64,7 +64,7 @@ class UserControllerTest extends TestCase
         $this->seeInDatabase('users', ['username' => 'stump']);
         $this->seeStatusCode(201);
         $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
-        $this->seeJsonContains(Self::$EXPECTED_UNAUTHORIZED_USER);
+        $this->seeJsonContains(Self::$EXPECTED_UNAUTHENTICATED_USER);
     }
 
     // Given is an unauthenticated user
@@ -143,6 +143,6 @@ class UserControllerTest extends TestCase
         // assertions
         $this->seeStatusCode(201);
         $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
-        $this->seeJsonContains(Self::$EXPECTED_AUTHORIZED_USER);
+        $this->seeJsonContains(Self::$EXPECTED_AUTHENTICATED_USER);
     }
 }
