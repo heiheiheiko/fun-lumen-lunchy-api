@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Http\Validators\UserValidator as ValidatorsUserValidator;
 use App\Interfaces\UserRepositoryInterface;
@@ -43,17 +42,5 @@ class UsersController extends Controller
         }
 
         return $this->respondWithToken($token);
-    }
-
-    public function index()
-    {
-        $users = $this->users->all();
-        return new UserCollection($users);
-    }
-
-    public function show($id)
-    {
-        $user = $this->users->find($id);
-        return new UserResource($user);
     }
 }
