@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof ValidationException) {
-            return response(['error' => $exception->errors()], 422);
+            return response(['data' => ['error' => $exception->errors()]], 422);
         }
 
         return parent::render($request, $exception);
