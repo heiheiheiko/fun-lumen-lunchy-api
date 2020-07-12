@@ -36,7 +36,7 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response(['data' => ['error' => 'Unauthorized']], 401);
+            return response(['data' => ['errors' => 'Unauthorized']], 401);
         }
 
         return $next($request);

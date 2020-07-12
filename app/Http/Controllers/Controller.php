@@ -30,6 +30,6 @@ class Controller extends BaseController
 
     protected function respondUnauthorized()
     {
-        return $this->respond(['data' => ['error' => 'Unauthorized']], 401);
+        return $this->respond(['data' => ['errors' => 'Unauthorized']], 401);
     }
 }
