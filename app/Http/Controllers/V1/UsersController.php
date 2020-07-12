@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
-use App\Http\Requests\UserRequest;
+use App\Http\Validators\UserValidator as ValidatorsUserValidator;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    use UserRequest;
-
     public function __construct(UserRepositoryInterface $users)
     {
         $this->middleware('auth', ['except' => ['create', 'authenticate']]);
@@ -23,7 +21,7 @@ class UsersController extends Controller
 
     public function create(Request $request)
     {
-        $this->validateCreate($request);
+        ValidatorsUserValidator::validateCreate($request->input('user'));
 
         $user = $this->users->create([
             'username' => $request->input('user.username'),
@@ -36,7 +34,7 @@ class UsersController extends Controller
 
     public function authenticate(Request $request)
     {
-        $this->validateAuthenticate($request);
+        ValidatorsUserValidator::validateAuthenticate($request->input('user'));
 
         $credentials = $request->all()['user'];
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OrderRequest;
+use App\Http\Validators\OrderValidator;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderRepositoryInterface;
@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    use OrderRequest;
-
     public function __construct(OrderRepositoryInterface $orders)
     {
         $this->middleware('auth');
@@ -21,7 +19,7 @@ class OrdersController extends Controller
 
     public function create(Request $request)
     {
-        $this->validateCreate($request);
+        OrderValidator::validateCreate($request->input('order'));
 
         $order = $this->orders->create($request->input('order'));
 
@@ -30,7 +28,7 @@ class OrdersController extends Controller
 
     public function update(Request $request)
     {
-        $this->validateUpdate($request);
+        OrderValidator::validateUpdate($request->input('order'));
 
         $order = $this->orders->update($request->input('order'));
 
