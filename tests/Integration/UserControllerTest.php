@@ -116,4 +116,33 @@ class UserControllerTest extends TestCase
             ]
         ]);
     }
+
+    // current action
+    //
+    // Given is an unauthenticated user
+    // When the "current" action is called
+    // Then return an unauthenticated message
+    public function test_CallCurrent_AsAnUnauthenticatedUser_ShouldReturnUnauthorized()
+    {
+        // preparation
+        $this->get(Self::$API_URL . '/current');
+
+        // assertions
+        $this->seeUnauthorized();
+    }
+
+    // Given is an authenticated user
+    // When the "current" action is called with a stored "user"
+    // Then the "user" should be find and return
+    public function test_CallCurrent_AsAnAuthenticatedUser_ShouldReturnAnStoredUser()
+    {
+        // preparation
+        $this->createAndAuthenticateUser();
+        Self::$authenticatedUser->get(Self::$API_URL . '/current');
+
+        // assertions
+        $this->seeStatusCode(201);
+        $this->seeJsonStructure(Self::$RESOURCE_SCHEMA);
+        $this->seeJsonContains(Self::$EXPECTED_AUTHORIZED_USER);
+    }
 }

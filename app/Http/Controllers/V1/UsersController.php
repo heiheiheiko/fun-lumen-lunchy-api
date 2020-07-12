@@ -43,4 +43,9 @@ class UsersController extends Controller
 
         return $this->respondWithToken($token);
     }
+
+    public function current()
+    {
+        return new UserResource(Auth::user());
+    }
 }
