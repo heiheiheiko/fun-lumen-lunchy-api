@@ -9,10 +9,10 @@ use Illuminate\Testing\Assert;
 trait TestHelper
 {
     protected static $user;
-    protected static $authorizedUser;
+    protected static $authenticatedUser;
 
     // preparations
-    public function createUnauthorizedUser()
+    public function createUnauthenticatedUser()
     {
         $user = factory(User::class)->create([
             'username' => 'stump',
@@ -23,14 +23,14 @@ trait TestHelper
         return $user;
     }
 
-    protected function createAndAuthorizeUser()
+    protected function createAndAuthenticateUser()
     {
         Self::$user = factory(User::class)->create([
             'username' => 'dagget',
             'email' => 'dagget@beaver.de',
             'password' => Hash::make('baronbadbeaver'),
         ]);
-        Self::$authorizedUser = $this->actingAs(Self::$user);
+        Self::$authenticatedUser = $this->actingAs(Self::$user);
     }
 
     // assertions
