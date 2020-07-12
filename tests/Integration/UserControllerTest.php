@@ -84,7 +84,7 @@ class UserControllerTest extends TestCase
 
         // assertions
         $this->seeStatusCode(422);
-        $this->seeJsonStructure(['data' => ['error']]);
+        $this->seeJsonStructure(['error']);
         $this->seeJsonContains(['username' => ['The username field is required.']]);
     }
 
