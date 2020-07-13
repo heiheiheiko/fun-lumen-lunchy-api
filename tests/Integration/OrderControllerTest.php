@@ -119,7 +119,14 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthenticateUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+
+        factory(Order::class)->make([
+            'site' => 'brennholz24.de',
+            'ordered_at' => '2015-10-21',
+            'user_id' => Self::$user->id,
+        ])->save();
+
+        $this->seeInDatabase('orders', ['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
         Self::$authenticatedUser->get(Self::$API_URL);
 
         // assertions
@@ -150,7 +157,11 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthenticateUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->make([
+            'site' => 'brennholz24.de',
+            'ordered_at' => '2015-10-21',
+            'user_id' => Self::$user->id,
+        ])->save();
         Self::$authenticatedUser->get(Self::$API_URL . '/1');
 
         // assertions
@@ -180,7 +191,11 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthenticateUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->make([
+            'site' => 'brennholz24.de',
+            'ordered_at' => '2015-10-21',
+            'user_id' => Self::$user->id,
+        ])->save();
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         $body = ['order' => ['id' => 1, 'site' => 'palettenShop.de']];
         Self::$authenticatedUser->put(Self::$API_URL . '/1', $body);
@@ -216,7 +231,11 @@ class OrderControllerTest extends TestCase
     {
         // preparation
         $this->createAndAuthenticateUser();
-        factory(Order::class)->create(['site' => 'brennholz24.de', 'ordered_at' => '2015-10-21']);
+        factory(Order::class)->make([
+            'site' => 'brennholz24.de',
+            'ordered_at' => '2015-10-21',
+            'user_id' => Self::$user->id,
+        ])->save();
         $this->seeInDatabase('orders', ['site' => 'brennholz24.de']);
         Self::$authenticatedUser->delete(Self::$API_URL . '/1');
 

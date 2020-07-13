@@ -8,6 +8,7 @@ use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
@@ -19,9 +20,10 @@ class OrdersController extends Controller
 
     public function create(Request $request)
     {
-        OrderValidator::validateCreate($request->input('order'));
+        $attributes = array_merge(['user_id' => Auth::user()->id], $request->input('order'));
+        OrderValidator::validateCreate($attributes);
 
-        $order = $this->orders->create($request->input('order'));
+        $order = $this->orders->create($attributes);
 
         return new OrderResource($order);
     }

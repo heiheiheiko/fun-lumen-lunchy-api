@@ -21,6 +21,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

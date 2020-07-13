@@ -9,11 +9,13 @@ class OrderValidator
     protected static $CREATE_RULES = [
         'site' => 'required',
         'ordered_at' => 'required',
+        'user_id' => 'required',
     ];
 
     protected static $UPDATE_RULES = [
         'site' => 'sometimes',
         'ordered_at' => 'sometimes',
+        'user_id' => 'sometimes',
     ];
 
     public static function createRules()

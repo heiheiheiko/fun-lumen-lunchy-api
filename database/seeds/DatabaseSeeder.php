@@ -3,6 +3,7 @@
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Order::class, 10)->create();
-        factory(User::class, 10)->create();
+        User::truncate();
+        Order::truncate();
+
+        $user = factory(User::class)->create([
+            'username' => 'oxnard',
+            'email' => 'oxnard@montalvo.de',
+            'password' => Hash::make('superstar'),
+        ]);
+        factory(Order::class)->make(['user_id' => $user->id])->save();
     }
 }
